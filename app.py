@@ -3,7 +3,42 @@ from tkinter import messagebox as mb
 
 class MyGUI:
 
+    def get_salary(self): #function where program retrieves the users salary input
+        self.salary = self.answer_salary.get() #retrieves value
+        if len(self.salary) == 0: #checks if user written anything
+            mb.showinfo("Fel", "Du måste skriva ett tal")  
+            
+        else:
+            try:
+                self.salary = int(self.salary) #checks if input is integer and saves to object
+                print(self.salary) #debugging
+                mb.showinfo("Klar!", "Din lön är sparad!")
+                self.main_menu()
+
+            except ValueError:
+                mb.showinfo("Fel", "Du måste skriva med nummer!")
+
+
+
+    def salary_login(self):
+        self.salary_frame = Frame(self.root)
+        self.salary_frame.columnconfigure(0, weight=1)
+
+        message_salary = Label(self.salary_frame, text="Skriv din lön nedan:", font="Times, 12")
+        message_salary.grid(column=0, row=0, sticky="ew", padx=5, pady=5)
+
+        self.answer_salary = Entry(self.salary_frame)
+        self.answer_salary.grid(column=0, row=1, sticky="ew", padx=5, pady=5)
+
+        btn_salary = Button(self.salary_frame, text="Klar", font="Times, 12", command=self.get_salary)
+        btn_salary.grid(column=0, row = 2, sticky="ew", padx=5, pady=5)
+
+        self.salary_frame.pack()
+
+
     def main_menu(self):
+        if self.salary_frame is not None:
+            self.salary_frame.forget()
         if self.val1_frame is not None:
             self.val1_frame.forget()
         self.btn_frame = Frame(self.root) #set main menu frame
@@ -11,17 +46,17 @@ class MyGUI:
         self.btn_frame.columnconfigure(0, weight= 1) #column configure
         self.btn_frame.columnconfigure(1, weight= 3) #column configure
 
-        self.btn_1 = Button(self.btn_frame, text="Lägg till ny budgetpost", font="Times, 12", command=self.val1) #button for choice 1, add post
-        self.btn_1.grid(column= 0, row= 0, sticky="ew", padx= 5, pady= 5) 
+        btn_1 = Button(self.btn_frame, text="Lägg till ny budgetpost", font="Times, 12", command=self.val1) #button for choice 1, add post
+        btn_1.grid(column= 0, row= 0, sticky="ew", padx= 5, pady= 5) 
 
-        self.btn_2 = Button(self.btn_frame, text= "Ändra budgetpost", font="Times, 12") #button for choice 2, change posts
-        self.btn_2.grid(column= 0, row= 1, sticky="ew" , padx= 5, pady= 5)
+        btn_2 = Button(self.btn_frame, text= "Ändra budgetpost", font="Times, 12") #button for choice 2, change posts
+        btn_2.grid(column= 0, row= 1, sticky="ew" , padx= 5, pady= 5)
 
-        self.btn_3 = Button(self.btn_frame, text="Skriv ut budget", font="Times, 12") #button for choice 3, print budget
-        self.btn_3.grid(column= 0, row= 2, padx=5, pady= 5, sticky="ew")
+        btn_3 = Button(self.btn_frame, text="Skriv ut budget", font="Times, 12") #button for choice 3, print budget
+        btn_3.grid(column= 0, row= 2, padx=5, pady= 5, sticky="ew")
 
-        self.btn_4 = Button(self.btn_frame, text="Avsluta program", font="Times, 12", command=self.exit_question) #button for choice 4, close program
-        self.btn_4.grid(column= 0, row= 3, padx=5, pady=5, sticky="ew")
+        btn_4 = Button(self.btn_frame, text="Avsluta program", font="Times, 12", command=self.exit_question) #button for choice 4, close program
+        btn_4.grid(column= 0, row= 3, padx=5, pady=5, sticky="ew")
 
         self.btn_frame.pack()
 
@@ -94,12 +129,16 @@ class MyGUI:
 
     def __init__(self): #main program 
         self.val1_frame = None #to make the attributes exist from start
+
         self.btn_frame = None #-.-
+
+        self.salary_frame = None
+
         self.budget_posts = {} #dict with budget posts
+
         self.root = Tk() #window
         self.root.geometry("800x500") #set geometry of window
-        self.main_menu() #call main menu function
-
+        self.salary_login()
 
 
 
