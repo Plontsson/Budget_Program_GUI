@@ -18,12 +18,16 @@ class Calculations: #Class only for calculating or functions retrieving
         return self.excess
 
     def print_budget(self):
-        file = open("budget.txt", "w")
-        for key, value in self.budget_posts.items():
-            file.write(f"{key}: {value} kr \n")
+        svar = mb.askyesno("Skriv ut", "Vill du verkligen skriva ut din budget?")
+        if svar == True:
+            file = open("budget.txt", "w")
+            for key, value in self.budget_posts.items():
+                file.write(f"{key}: {value} kr \n")
 
-        file.write(f"Summan av dina kostnader är: {self.sum_costs()}\n")
-        file.write(f"Du har såhär mycket pengar över: {self.excess_salary()}")
+            file.write(f"Summan av dina kostnader är: {self.sum_costs()}\n")
+            file.write(f"Du har såhär mycket pengar över: {self.excess_salary()}")
+        else:
+            mb.showinfo("Återvänder", "Återvänder till program")
 
     def get_salary(self):
         self.salary = self.gui.answer_salary.get() #retrieves value
@@ -68,7 +72,6 @@ class Calculations: #Class only for calculating or functions retrieving
     def exit_question(self): #function to ask if user wants to close program
         svar = mb.askyesno("Stäng programmet", "Vill du verkligen stänga programmet?") #using tkinter yesno 
         if svar == True:
-            mb.showinfo("Stäng", "Stänger...")
             self.gui.root.destroy() #closes application
         else:
             mb.showinfo("Återvänd", "Återvänder till program") #returning to program
