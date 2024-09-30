@@ -149,13 +149,13 @@ class MyGUI: #Class for the frames and main program
         message_budgetpost.grid(column= 0, row=0, sticky="ew", padx=5,pady=5) 
 
 
-        self.svar_budgetpost = Entry(self.val1_frame) #entry for budgetpost
+        self.svar_budgetpost = Entry(self.val1_frame, bg="white") #entry for budgetpost
         self.svar_budgetpost.grid(column=0, row=1, sticky="ew", padx=5, pady=5)
 
         message_cost = Label(self.val1_frame, text="Vad kostar denna budgetpost?", font="Times, 12") #information message
         message_cost.grid(column=0, row=2, sticky="ew", padx=5, pady=5)
 
-        self.svar_cost = Entry(self.val1_frame) #entry for value for budgetpost
+        self.svar_cost = Entry(self.val1_frame, bg="white") #entry for value for budgetpost
         self.svar_cost.grid(column=0, row=3, sticky="ew", padx=5, pady=5)
 
         btn = Button(self.val1_frame, text="Klar", font="Times, 12", command=self.calc.get_answer) #button for calling the get_budgetpost function
@@ -164,6 +164,7 @@ class MyGUI: #Class for the frames and main program
         btn_2.grid(column=1, row=5, sticky="ew", padx=5,pady=5)
         
         self.val1_frame.pack() #pack...
+        self.val1_frame.update_idletasks() #force update the frame, problem on macos
             
 
 MyGUI()
