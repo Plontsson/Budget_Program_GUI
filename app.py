@@ -8,17 +8,17 @@ class Calculations: #Class only for calculating or functions retrieving
         self.gui = gui #reference gui
         self.budget_posts = {}
 
-    def sum_costs(self):
+    def sum_costs(self): #function to sum the costs
         self.costs = sum(self.budget_posts.values())
         return self.costs
     
-    def excess_salary(self):
+    def excess_salary(self): #function calculate excess salary
         self.salary = float(self.salary)
         self.excess = self.salary - self.costs
         return self.excess
 
-    def print_budget(self):
-        svar = mb.askyesno("Skriv ut", "Vill du verkligen skriva ut din budget?")
+    def print_budget(self): #function to print the budget to a txt file
+        svar = mb.askyesno("Skriv ut", "Vill du verkligen skriva ut din budget?") #question user if he/she really wants to create budget txt file
         if svar == True:
             file = open("budget.txt", "w")
             for key, value in self.budget_posts.items():
@@ -29,7 +29,7 @@ class Calculations: #Class only for calculating or functions retrieving
         else:
             mb.showinfo("Återvänder", "Återvänder till program")
 
-    def get_salary(self):
+    def get_salary(self): #function to get salary
         self.salary = self.gui.answer_salary.get() #retrieves value
         if len(self.salary) == 0: #checks if user written anything
             mb.showinfo("Fel", "Du måste skriva ett tal")  
