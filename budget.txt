@@ -1,0 +1,4 @@
+bil: 5000.0 kr 
+hus: 6000.0 kr 
+Summan av dina kostnader är: 11000.0
+Du har såhär mycket pengar över: 12000.0

@@ -8,6 +8,23 @@ class Calculations: #Class only for calculating or functions retrieving
         self.gui = gui #reference gui
         self.budget_posts = {}
 
+    def sum_costs(self):
+        self.costs = sum(self.budget_posts.values())
+        return self.costs
+    
+    def excess_salary(self):
+        self.salary = float(self.salary)
+        self.excess = self.salary - self.costs
+        return self.excess
+
+    def print_budget(self):
+        file = open("budget.txt", "w")
+        for key, value in self.budget_posts.items():
+            file.write(f"{key}: {value} kr \n")
+
+        file.write(f"Summan av dina kostnader är: {self.sum_costs()}\n")
+        file.write(f"Du har såhär mycket pengar över: {self.excess_salary()}")
+
     def get_salary(self):
         self.salary = self.gui.answer_salary.get() #retrieves value
         if len(self.salary) == 0: #checks if user written anything
@@ -15,7 +32,7 @@ class Calculations: #Class only for calculating or functions retrieving
             
         else:
             try:
-                self.salary = int(self.salary) #checks if input is integer and saves to object
+                self.salary = float(self.salary) #checks if input can be turned to float
                 print(self.salary) #debugging
                 mb.showinfo("Klar!", "Din lön är sparad!")
                 self.gui.main_menu()
@@ -36,11 +53,11 @@ class Calculations: #Class only for calculating or functions retrieving
 
         else:
             try: #try to turn the value to int, if valueerror print error message
-                int(self.get_cost) #makes value to INT
+                float(self.get_cost) #checks if entry can be turned to float
 
-                self.budget_posts[self.get_budgetpost] = self.get_cost #appends pair to dict
+                self.budget_posts[self.get_budgetpost] = float(self.get_cost) #appends pair to dict
 
-                print(self.budget_posts) #debugging
+                print(self.budget_posts.values()) #debugging
                 mb.showinfo("Klart", "Budgetposten är sparad!")
                 self.gui.svar_budgetpost.delete(0, END) #clears entry field
                 self.gui.svar_cost.delete(0, END) #clears entry field
@@ -65,34 +82,35 @@ class MyGUI: #Class for the frames and main program
 
         self.btn_frame = None #-.-
 
-        self.salary_frame = None
+        self.salary_frame = None #-.-
 
         self.root = Tk() #window
         self.root.geometry("800x500") #set geometry of window
-        self.salary_login()
+        self.salary_login() #calls the login frame menu
 
-
+        self.root.protocol("WM_DELETE_WINDOW", self.calc.exit_question) #Closing procedure for X on window aswell
 
         self.root.mainloop()
 
 
-    def salary_login(self):
-        self.salary_frame = Frame(self.root)
-        self.salary_frame.columnconfigure(0, weight=1)
 
-        message_salary = Label(self.salary_frame, text="Skriv din lön nedan:", font="Times, 12")
+    def salary_login(self): #salary menu, shows on startup
+        self.salary_frame = Frame(self.root) #sets frame
+        self.salary_frame.columnconfigure(0, weight=1) #columnconfigure
+
+        message_salary = Label(self.salary_frame, text="Skriv din lön nedan:", font="Times, 12") #welcome message
         message_salary.grid(column=0, row=0, sticky="ew", padx=5, pady=5)
 
-        self.answer_salary = Entry(self.salary_frame)
+        self.answer_salary = Entry(self.salary_frame) #entry for user input salary
         self.answer_salary.grid(column=0, row=1, sticky="ew", padx=5, pady=5)
 
-        btn_salary = Button(self.salary_frame, text="Klar", font="Times, 12", command=self.calc.get_salary)
+        btn_salary = Button(self.salary_frame, text="Klar", font="Times, 12", command=self.calc.get_salary) #button to enter main menu and pass salary
         btn_salary.grid(column=0, row = 2, sticky="ew", padx=5, pady=5)
 
         self.salary_frame.pack()
 
 
-    def main_menu(self):
+    def main_menu(self): #main menu frame
         if self.salary_frame is not None: #create instance and checks if it already is activated
             self.salary_frame.forget()
         if self.val1_frame is not None: #create instance and checks if it already is activated
@@ -108,7 +126,7 @@ class MyGUI: #Class for the frames and main program
         btn_2 = Button(self.btn_frame, text= "Ändra budgetpost", font="Times, 12") #button for choice 2, change posts
         btn_2.grid(column= 0, row= 1, sticky="ew" , padx= 5, pady= 5)
 
-        btn_3 = Button(self.btn_frame, text="Skriv ut budget", font="Times, 12") #button for choice 3, print budget
+        btn_3 = Button(self.btn_frame, text="Skriv ut budget", font="Times, 12", command=self.calc.print_budget) #button for choice 3, print budget
         btn_3.grid(column= 0, row= 2, padx=5, pady= 5, sticky="ew")
 
         btn_4 = Button(self.btn_frame, text="Avsluta program", font="Times, 12", command=self.calc.exit_question) #button for choice 4, close program
@@ -116,7 +134,7 @@ class MyGUI: #Class for the frames and main program
 
         self.btn_frame.pack()
 
-    def val1(self): #choice 1 function
+    def val1(self): #choice 1 frame
         if self.btn_frame is not None:
             self.btn_frame.forget() #forgets earlier frame
         self.val1_frame = Frame(self.root) #creates new frame
@@ -142,8 +160,7 @@ class MyGUI: #Class for the frames and main program
         btn_2 = Button(self.val1_frame, text="Tillbaka till menyn", font="Times, 12", command=self.main_menu)
         btn_2.grid(column=1, row=5, sticky="ew", padx=5,pady=5)
         
-        
-        
         self.val1_frame.pack() #pack...
+            
 
 MyGUI()
