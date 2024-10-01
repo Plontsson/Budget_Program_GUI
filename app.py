@@ -8,7 +8,7 @@ class Calculations: #Class only for calculating or functions retrieving
         self.gui = gui #reference gui
         self.budget_posts = {}
 
-    def load_budget_file(self):
+    def load_budget_file(self): #loads old txt file if it exists
         if os.path.exists("budget.txt"):
             with open("budget.txt", "r") as file:
                 for line in file:
