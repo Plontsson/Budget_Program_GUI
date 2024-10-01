@@ -1,6 +1,0 @@
-hus: 5000.0 kr 
-bil : 5000.0 kr 
-telefon: 400.0 kr 
-Summan av dina kostnader är: 15400.0 kr 
-Summan av dina kostnader är: 25800.0
-Du har såhär mycket pengar över: -25795.0

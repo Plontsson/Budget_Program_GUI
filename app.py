@@ -16,10 +16,14 @@ class Calculations: #Class only for calculating or functions retrieving
                         continue
                     key, value = line.split(": ")
                     self.budget_posts[key] = float((value.replace("kr", "")).strip())
+                mb.showinfo("Klart", "Din gamla budget fil är inladdad.")
+        else:
+            mb.showinfo("Fel", "Hittande in fil med namn: budget.txt på din dator.")
 
     def change_value(self): #function that appends the new value to the budget post dict
 
         self.new_value = self.gui.new_value.get()
+        self.new_value = self.new_value.replace("kr", "").strip()
 
         if len(self.new_value) == 0:
             mb.showinfo("Fel!", "Du måste skriva något i fältet")
@@ -74,6 +78,7 @@ class Calculations: #Class only for calculating or functions retrieving
 
     def get_salary(self): #function to get salary
         self.salary = self.gui.answer_salary.get() #retrieves value
+        self.salary = self.salary.replace("kr", "").strip()
         if len(self.salary) == 0: #checks if user written anything
             mb.showinfo("Fel", "Du måste skriva ett tal")  
             
@@ -90,6 +95,7 @@ class Calculations: #Class only for calculating or functions retrieving
     def get_answer(self): #function to get the key and value from input
         self.get_budgetpost = self.gui.svar_budgetpost.get() #gets key
         self.get_cost = self.gui.svar_cost.get() #gets  value
+        self.get_cost = self.get_cost.replace("kr", "").strip()
         self.get_budgetpost = self.get_budgetpost.lower() #lowercase key  
         
         if len(self.get_budgetpost) == 0 or len(self.get_cost) == 0: #checks if the entry fields are empty
@@ -134,7 +140,6 @@ class MyGUI: #Class for the frames and main program
 
         self.salary_frame = None #-.-
 
-        self.calc.load_budget_file()
 
         self.root = Tk() #window
         self.root.geometry("800x500") #set geometry of window
@@ -192,6 +197,9 @@ class MyGUI: #Class for the frames and main program
 
         btn_4 = Button(self.btn_frame, text="Avsluta program", font="Times, 12", command=self.calc.exit_question) #button for choice 4, close program
         btn_4.grid(column= 0, row= 4, padx=5, pady=5, sticky="ew")
+
+        btn_5 = Button(self.btn_frame, text="Ladda tidigare budget fil", font="Times, 12", command=self.calc.load_budget_file)
+        btn_5.grid(column=0, row=5, sticky="ew", padx=5, pady=5)
 
         self.btn_frame.pack()
         self.btn_frame.update_idletasks()
@@ -257,7 +265,7 @@ class MyGUI: #Class for the frames and main program
         self.val_2_second_frame.columnconfigure(0, weight=1)
         self.val_2_second_frame.columnconfigure(1, weight=1)
 
-        message = Label(self.val_2_second_frame, text="Hur mycet kostar budegtposten?", font="Times, 12")
+        message = Label(self.val_2_second_frame, text="Hur mycket kostar budegtposten?", font="Times, 12")
         message.grid(column=0, row=0, sticky="ew", padx=5, pady=5)
 
         self.new_value = Entry(self.val_2_second_frame, font="Times, 12")
