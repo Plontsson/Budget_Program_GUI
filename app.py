@@ -8,6 +8,40 @@ class Calculations: #Class only for calculating or functions retrieving
         self.gui = gui #reference gui
         self.budget_posts = {}
 
+    def change_value(self): #function that appends the new value to the budget post dict
+
+        self.new_value = self.gui.new_value.get()
+
+        if len(self.new_value) == 0:
+            mb.showinfo("Fel!", "Du måste skriva något i fältet")
+
+        else:
+            
+            try:
+                self.new_value = float(self.new_value)
+                self.budget_posts[self.change_post] = self.new_value
+                mb.showinfo("Klart", "Din budgetpost är ändrad!")
+                self.gui.main_menu()
+
+            except ValueError:
+                mb.showinfo("Fel!", "Du måste skriva med nummer!")
+
+        
+
+    def change_budget_post(self): #function that gets the budget post
+        self.change_post = self.gui.answer_val_2.get()
+        self.change_post = self.change_post.lower()
+
+        if len(self.change_post) == 0:
+            mb.showinfo("Fel!", "Du måste skriva något i fältet!")
+
+        elif self.change_post in self.budget_posts:
+            self.gui.val_2_second()
+
+        else:
+            mb.showinfo("Fel!", "Den budgetposten finns inte!")
+    
+
     def sum_costs(self): #function to sum the costs
         self.costs = sum(self.budget_posts.values())
         return self.costs
@@ -82,6 +116,10 @@ class MyGUI: #Class for the frames and main program
     def __init__(self): #main program 
         self.calc = Calculations(self) #create instance and pass itself
         self.val1_frame = None #to make the attributes exist from start
+        
+        self.val_2_frame = None
+
+        self.val_2_second_frame = None
 
         self.btn_frame = None #-.-
 
@@ -118,6 +156,11 @@ class MyGUI: #Class for the frames and main program
             self.salary_frame.forget()
         if self.val1_frame is not None: #create instance and checks if it already is activated
             self.val1_frame.forget()
+        if self.val_2_frame is not None:
+            self.val_2_frame.forget()
+        if self.val_2_second_frame is not None:
+            self.val_2_second_frame.forget()
+            
         self.btn_frame = Frame(self.root) #set main menu frame
 
         self.btn_frame.columnconfigure(0, weight= 1) #column configure
@@ -126,7 +169,7 @@ class MyGUI: #Class for the frames and main program
         btn_1 = Button(self.btn_frame, text="Lägg till ny budgetpost", font="Times, 12", command=self.val1) #button for choice 1, add post
         btn_1.grid(column= 0, row= 0, sticky="ew", padx= 5, pady= 5) 
 
-        btn_2 = Button(self.btn_frame, text= "Ändra budgetpost", font="Times, 12") #button for choice 2, change posts
+        btn_2 = Button(self.btn_frame, text= "Ändra budgetpost", font="Times, 12", command=self.val_2_main) #button for choice 2, change posts
         btn_2.grid(column= 0, row= 1, sticky="ew" , padx= 5, pady= 5)
 
         btn_3 = Button(self.btn_frame, text="Skriv ut budget", font="Times, 12", command=self.calc.print_budget) #button for choice 3, print budget
@@ -136,8 +179,10 @@ class MyGUI: #Class for the frames and main program
         btn_4.grid(column= 0, row= 3, padx=5, pady=5, sticky="ew")
 
         self.btn_frame.pack()
+        self.btn_frame.update_idletasks()
 
     def val1(self): #choice 1 frame
+
         if self.btn_frame is not None:
             self.btn_frame.forget() #forgets earlier frame
         self.val1_frame = Frame(self.root) #creates new frame
@@ -165,6 +210,47 @@ class MyGUI: #Class for the frames and main program
         
         self.val1_frame.pack() #pack...
         self.val1_frame.update_idletasks() #force update the frame, problem on macos
-            
 
+    def val_2_main(self): #choice 2 frame for changing the value of existing budget post
+        if self.btn_frame is not None:
+            self.btn_frame.forget()
+        self.val_2_frame = Frame(self.root)
+
+        self.val_2_frame.columnconfigure(0, weight = 1)
+        self.val_2_frame.columnconfigure(1, weight=1)            
+
+        welcome = Label(self.val_2_frame, text="Vilken budgetpost skulle du vilja ändra?", font="Times, 12")
+        welcome.grid(column=0, row=0, sticky="ew",padx=5, pady=5)
+        
+        self.answer_val_2 = Entry(self.val_2_frame, font="Times, 12")
+        self.answer_val_2.grid(column=0, row=1, sticky="ew", padx=5, pady=5)
+
+        btn = Button(self.val_2_frame, text="Klar", font="Times, 12", command=self.calc.change_budget_post)
+        btn.grid(column=0, row=2, sticky="we", padx=5,pady=5)
+
+        btn_2 = Button(self.val_2_frame, text="Tillbaka till huvudmenyn", font="Times, 12", command=self.main_menu)
+        btn_2.grid(column=1, row=2, sticky="ew", padx=5, pady=5)
+
+        self.val_2_frame.pack()
+        self.val_2_frame.update_idletasks()
+
+    def val_2_second(self): #second frame where you enter the changed value
+        self.val_2_frame.forget()
+
+        self.val_2_second_frame = Frame(self.root)
+
+        self.val_2_second_frame.columnconfigure(0, weight=1)
+        self.val_2_second_frame.columnconfigure(1, weight=1)
+
+        message = Label(self.val_2_second_frame, text="Hur mycet kostar budegtposten?", font="Times, 12")
+        message.grid(column=0, row=0, sticky="ew", padx=5, pady=5)
+
+        self.new_value = Entry(self.val_2_second_frame, font="Times, 12")
+        self.new_value.grid(column=0, row=1, sticky="we", padx=5, pady=5)
+
+        btn = Button(self.val_2_second_frame, text="Klar", font="Times, 12", command=self.calc.change_value)
+        btn.grid(column=0, row=2, sticky="we", padx=5, pady=5)
+        
+        self.val_2_second_frame.pack()
+        self.val_2_second_frame.update_idletasks()
 MyGUI()
