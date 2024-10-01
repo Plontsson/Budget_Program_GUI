@@ -1,12 +1,21 @@
 from tkinter import *
 from tkinter import messagebox as mb
-
+import os
 
 
 class Calculations: #Class only for calculating or functions retrieving
     def __init__(self,gui):
         self.gui = gui #reference gui
         self.budget_posts = {}
+
+    def load_budget_file(self):
+        if os.path.exists("budget.txt"):
+            with open("budget.txt", "r") as file:
+                for line in file:
+                    if "Summan av dina kostnäder är: " in line or "Du har såhär mycket pengar över: " in line:
+                        continue
+                    key, value = line.split(": ")
+                    self.budget_posts[key] = float((value.replace("kr", "")).strip())
 
     def change_value(self): #function that appends the new value to the budget post dict
 
@@ -124,6 +133,8 @@ class MyGUI: #Class for the frames and main program
         self.btn_frame = None #-.-
 
         self.salary_frame = None #-.-
+
+        self.calc.load_budget_file()
 
         self.root = Tk() #window
         self.root.geometry("800x500") #set geometry of window
