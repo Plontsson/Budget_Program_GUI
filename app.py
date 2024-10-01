@@ -18,7 +18,7 @@ class Calculations: #Class only for calculating or functions retrieving
                     self.budget_posts[key] = float((value.replace("kr", "")).strip())
                 mb.showinfo("Klart", "Din gamla budget fil är inladdad.")
         else:
-            mb.showinfo("Fel", "Hittande in fil med namn: budget.txt på din dator.")
+            mb.showinfo("Fel", "Hittande inte fil med namn: budget.txt på din dator.")
 
     def change_value(self): #function that appends the new value to the budget post dict
 
