@@ -138,6 +138,7 @@ class MyGUI: #Class for the frames and main program
 
         self.root = Tk() #window
         self.root.geometry("800x500") #set geometry of window
+        self.root.title("Budget Program")
         self.salary_login() #calls the login frame menu
 
         self.root.protocol("WM_DELETE_WINDOW", self.calc.exit_question) #Closing procedure for X on window aswell
@@ -177,17 +178,20 @@ class MyGUI: #Class for the frames and main program
         self.btn_frame.columnconfigure(0, weight= 1) #column configure
         self.btn_frame.columnconfigure(1, weight= 3) #column configure
 
+        welcome_message = Label(self.btn_frame, text="Välkommen till budgetprogrammet!", font=("Times, 12"))
+        welcome_message.grid(column=0, row=0, sticky="ew", padx=5, pady=5)
+
         btn_1 = Button(self.btn_frame, text="Lägg till ny budgetpost", font="Times, 12", command=self.val1) #button for choice 1, add post
-        btn_1.grid(column= 0, row= 0, sticky="ew", padx= 5, pady= 5) 
+        btn_1.grid(column= 0, row= 1, sticky="ew", padx= 5, pady= 5) 
 
         btn_2 = Button(self.btn_frame, text= "Ändra budgetpost", font="Times, 12", command=self.val_2_main) #button for choice 2, change posts
-        btn_2.grid(column= 0, row= 1, sticky="ew" , padx= 5, pady= 5)
+        btn_2.grid(column= 0, row= 2, sticky="ew" , padx= 5, pady= 5)
 
         btn_3 = Button(self.btn_frame, text="Skriv ut budget", font="Times, 12", command=self.calc.print_budget) #button for choice 3, print budget
-        btn_3.grid(column= 0, row= 2, padx=5, pady= 5, sticky="ew")
+        btn_3.grid(column= 0, row= 3, padx=5, pady= 5, sticky="ew")
 
         btn_4 = Button(self.btn_frame, text="Avsluta program", font="Times, 12", command=self.calc.exit_question) #button for choice 4, close program
-        btn_4.grid(column= 0, row= 3, padx=5, pady=5, sticky="ew")
+        btn_4.grid(column= 0, row= 4, padx=5, pady=5, sticky="ew")
 
         self.btn_frame.pack()
         self.btn_frame.update_idletasks()
